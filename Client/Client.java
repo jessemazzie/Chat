@@ -48,7 +48,7 @@ public class Client extends JFrame implements ActionListener {
         mainPanel = new JPanel(new BorderLayout());
         navigationPanel = new JPanel(new GridBagLayout());
         navigationPanel.add(buddyScrollPane, gbc);
-        navigationPanel.add(newJButton("Connect", "CONNECT"), gbc);
+        navigationPanel.add(newJButton("Connect", "CONNECT", this), gbc);
 
         mainPanel.add(navigationPanel, BorderLayout.WEST);
         //cp.add(loginRegisterPanel);
@@ -56,11 +56,12 @@ public class Client extends JFrame implements ActionListener {
         setupMainFrame();
     }
 
-    JButton newJButton(String label, String actionCommand) {
+    public static JButton newJButton(String label, String actionCommand, ActionListener al) {
         JButton tempButton = new JButton();
 
         tempButton.setText(label);
         tempButton.setActionCommand(actionCommand);
+        tempButton.addActionListener(al);
 
         return tempButton;
     }
@@ -82,12 +83,17 @@ public class Client extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    void connect() {
+        new LoginScreen();
+    }
+
     @Override
     public void actionPerformed(ActionEvent ae) {
         String cmd = ae.getActionCommand();
 
-        if(cmd.equals("LOGIN")) {
-//            login();
+        if(cmd.equals("CONNECT")) {
+            System.out.println("CONNECT WAS ACTION COMMAND");
+            connect();
         }
     }
 }

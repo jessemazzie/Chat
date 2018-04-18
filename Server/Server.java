@@ -23,8 +23,8 @@ public class Server {
             users = new UserList(new DataInputStream(new FileInputStream(userFile)));
             System.out.println("Users loaded from file.");
         } catch(IOException ioe) {
-            ioe.printStackTrace();
             users = new UserList();
+            System.out.println("Created new user file.");
         }
         loggedInUsers = new Vector<User>();
         try {
@@ -68,5 +68,9 @@ public class Server {
         while(userEnum.hasMoreElements()) {
             userEnum.nextElement().send(strToBroadcast);
         }
+    }
+
+    public static void main(String[] args) {
+        new Server();
     }
 }
