@@ -1,19 +1,24 @@
 package Client;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class LoginScreen extends JDialog implements ActionListener {
+    CTS cts;
+    Client client;
     Container cp;
     JTextField userNameField;
-    JTextField passwordField;
+    JPasswordField passwordField;
 
-    LoginScreen() {
+    LoginScreen(CTS cts, Client client) {
         JPanel textFieldsPanel;
         JPanel buttonPanel;
+
+        this.cts = cts;
+        this.client = client;
 
         textFieldsPanel = new JPanel(new GridLayout(2, 2));
 
@@ -21,7 +26,7 @@ public class LoginScreen extends JDialog implements ActionListener {
         textFieldsPanel.add(new JLabel("Username: "));
         textFieldsPanel.add(userNameField);
 
-        passwordField = new JTextField();
+        passwordField = new JPasswordField();
         textFieldsPanel.add(new JLabel("Password: "));
         textFieldsPanel.add(passwordField);
 
@@ -59,8 +64,21 @@ public class LoginScreen extends JDialog implements ActionListener {
 
         if(cmd.equals("LOGIN")) {
             System.out.println("Attempting login...");
+            try {
+                cts.send("LOGIN " + userNameField.getText() + " " + passwordField.getText());
+
+            } catch (IOException e) {
+                System.out.println("Unable to send message from login screen to server");
+            }
+            dispose();
         } else if(cmd.equals("REGISTER")) {
             System.out.println("Attempting registration...");
+            try {
+                cts.send("REGISTER " + userNameField.getText() + " " + passwordField.getText());
+            } catch (IOException e) {
+                System.out.println("Unable to send message from registration screen to server");
+            }
+            dispose();
         }
     }
 }

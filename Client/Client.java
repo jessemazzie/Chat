@@ -84,7 +84,7 @@ public class Client extends JFrame implements ActionListener {
     }
 
     void connect() {
-        new LoginScreen();
+        new LoginScreen(cts, this);
     }
 
     @Override

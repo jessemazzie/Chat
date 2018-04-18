@@ -8,7 +8,7 @@ import java.util.Vector;
 public class User {
     String username;
     String password;
-    //CTC ctc;
+    CTC ctc;
     Vector<String> friendsList;
 
     public User(String username, String password) {
@@ -22,11 +22,11 @@ public class User {
     }
 
     void send(String messageToBroadcast) {
-//        try {
-//            ctc.talker.send(messageToBroadcast);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            ctc.talker.send(messageToBroadcast);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     void store(DataOutputStream dos) throws IOException {
