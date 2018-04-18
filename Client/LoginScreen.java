@@ -1,4 +1,10 @@
 package Client;
 
-public class LoginScreen {
+import javax.swing.*;
+
+public class LoginScreen extends JDialog {
+
+    LoginScreen(CTS cts) {
+
+    }
 }

@@ -5,7 +5,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 
-public class UserList extends HashMap<String, User> {
+public class UserList extends Hashtable<String, User> {
 
     public UserList(){}
 
@@ -26,12 +26,12 @@ public class UserList extends HashMap<String, User> {
     }
 
     void store() throws IOException {
-//        File file = new File("users.xyz");
-//        Enumeration<User> users = elements();
-//        DataOutputStream dos = new DataOutputStream(new FileOutputStream((file)));
-//        System.out.println("Number of elements" + size());
-//        dos.writeInt(size());
-//        while(users.hasMoreElements())
-//            users.nextElement().store(dos);
+        File file = new File("users.xyz");
+        Enumeration<User> users = elements();
+        DataOutputStream dos = new DataOutputStream(new FileOutputStream((file)));
+        System.out.println("Number of elements" + size());
+        dos.writeInt(size());
+        while(users.hasMoreElements())
+            users.nextElement().store(dos);
     }
 }

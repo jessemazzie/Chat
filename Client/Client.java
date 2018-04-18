@@ -1,5 +1,7 @@
 package Client;
 
+import Server.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,11 +11,6 @@ import java.util.Arrays;
 
 public class Client extends JFrame implements ActionListener {
     CTS cts;
-    JPanel loginRegisterPanel;
-    JTextField usernameField;
-    JPasswordField passwordField;
-    JButton registerButton;
-    JButton loginButton;
 
 
     public static void main(String[] args) {
@@ -21,44 +18,51 @@ public class Client extends JFrame implements ActionListener {
     }
 
     Client() {
+        JPanel mainPanel;
+        JPanel navigationPanel;
+        DefaultListModel<User> buddyList;
+        JList<User> buddyJList;
+        JScrollPane buddyScrollPane;
+        GridBagConstraints gbc = new GridBagConstraints();
         Container cp;
         cp = getContentPane();
-//        while(cts == null) {
-//            try {
-//                cts = new CTS(this);
-//            } catch (IOException ioe) {
-//                ioe.printStackTrace();
-//            }
-//        }
+        while(cts == null) {
+            try {
+                cts = new CTS(this);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
 
-        usernameField = new JTextField();
-        usernameField.setSize(25, 1);
+        buddyList = new DefaultListModel<User>();
+        buddyJList = new JList<User>(buddyList);
+        buddyScrollPane = new JScrollPane(buddyJList);
 
-        passwordField = new JPasswordField();
-        passwordField.setSize(25, 1);
+        for(int i = 0; i < 15; i++)
+            buddyList.addElement(new User("username" + i, ""));
 
-        loginButton = new JButton("Login");
-        loginButton.addActionListener(this);
-        loginButton.setActionCommand("LOGIN");
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        //gbc.ipady = 20;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
 
-        registerButton = new JButton("Register");
-        registerButton.addActionListener(this);
-        registerButton.setActionCommand("REGISTER");
+        mainPanel = new JPanel(new BorderLayout());
+        navigationPanel = new JPanel(new GridBagLayout());
+        navigationPanel.add(buddyScrollPane, gbc);
+        navigationPanel.add(newJButton("Connect", "CONNECT"), gbc);
 
-        loginRegisterPanel = new JPanel(new GridLayout(3, 2, 3, 5));
-        loginRegisterPanel.setVisible(true);
-
-        loginRegisterPanel.add(new JLabel("Username: "));
-        loginRegisterPanel.add(usernameField);
-
-        loginRegisterPanel.add(new JLabel("Password: "));
-        loginRegisterPanel.add(passwordField);
-
-        loginRegisterPanel.add(loginButton);
-        loginRegisterPanel.add(registerButton);
-
-        cp.add(loginRegisterPanel);
+        mainPanel.add(navigationPanel, BorderLayout.WEST);
+        //cp.add(loginRegisterPanel);
+        cp.add(mainPanel);
         setupMainFrame();
+    }
+
+    JButton newJButton(String label, String actionCommand) {
+        JButton tempButton = new JButton();
+
+        tempButton.setText(label);
+        tempButton.setActionCommand(actionCommand);
+
+        return tempButton;
     }
 
 
@@ -73,41 +77,9 @@ public class Client extends JFrame implements ActionListener {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        setTitle("Login/Register");
+        setTitle("Chat");
 
         setVisible(true);
-    }
-
-    String getPasswordString() {
-        String tempPassword = "";
-
-        for(int i = 0; i < passwordField.getPassword().length; i++) {
-            tempPassword += passwordField.getPassword()[i];
-        }
-
-        return tempPassword;
-    }
-
-    void login() {
-        String username = usernameField.getText();
-        String password = getPasswordString();
-
-        try {
-            cts.send("LOGIN " + username + " " + password);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    void register() {
-        String username = usernameField.getText();
-        String password = getPasswordString();
-
-        try {
-            cts.send("REGISTER " + username + " " + password);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -115,9 +87,7 @@ public class Client extends JFrame implements ActionListener {
         String cmd = ae.getActionCommand();
 
         if(cmd.equals("LOGIN")) {
-            login();
-        } else if(cmd.equals("REGISTER")) {
-            register();
+//            login();
         }
     }
 }

@@ -11,7 +11,7 @@ public class User {
     //CTC ctc;
     Vector<String> friendsList;
 
-    User(String username, String password) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -32,5 +32,10 @@ public class User {
     void store(DataOutputStream dos) throws IOException {
         dos.writeUTF(username);
         dos.writeUTF(password);
+    }
+
+    @Override
+    public String toString() {
+        return username;
     }
 }
