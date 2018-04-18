@@ -70,7 +70,6 @@ public class LoginScreen extends JDialog implements ActionListener {
             } catch (IOException e) {
                 System.out.println("Unable to send message from login screen to server");
             }
-            dispose();
         } else if(cmd.equals("REGISTER")) {
             System.out.println("Attempting registration...");
             try {
@@ -78,7 +77,6 @@ public class LoginScreen extends JDialog implements ActionListener {
             } catch (IOException e) {
                 System.out.println("Unable to send message from registration screen to server");
             }
-            dispose();
         }
     }
 }

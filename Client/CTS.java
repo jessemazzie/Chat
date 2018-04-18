@@ -19,6 +19,11 @@ public class CTS implements Runnable {
         new Thread(this).start();
     }
 
+    /**
+     * Wrapper method for talker.send(String s)
+     * @param stringToSend
+     * @throws IOException
+     */
     void send(String stringToSend) throws IOException {
         talker.send(stringToSend);
     }
@@ -31,8 +36,8 @@ public class CTS implements Runnable {
                 msg = talker.receive().trim();
                 System.out.println("Message in CTC: " + msg);
                 if(msg.equals("LOGGED_IN")) {
-//                    client.setVisible(false);
-//                    messageBox = new MessageBox(this);
+                    client.setVisible(false);
+                    client.isLoggedIn = true;
                 } else if(msg.startsWith("BROADCAST")) {
                     System.out.println(msg);
 //                    messageBox.messageList.addElement(msg.substring(9));

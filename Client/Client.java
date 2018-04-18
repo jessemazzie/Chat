@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class Client extends JFrame implements ActionListener {
     CTS cts;
-
+    boolean isLoggedIn = false;
 
     public static void main(String[] args) {
         new Client();
