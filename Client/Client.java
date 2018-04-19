@@ -92,7 +92,6 @@ public class Client extends JFrame implements ActionListener {
         String cmd = ae.getActionCommand();
 
         if(cmd.equals("CONNECT")) {
-            System.out.println("CONNECT WAS ACTION COMMAND");
             connect();
         }
     }
