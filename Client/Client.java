@@ -19,11 +19,9 @@ public class Client extends JFrame implements ActionListener {
 
     Client() {
         JPanel mainPanel;
-        JPanel navigationPanel;
         DefaultListModel<User> buddyList;
         JList<User> buddyJList;
         JScrollPane buddyScrollPane;
-        GridBagConstraints gbc = new GridBagConstraints();
         Container cp;
         cp = getContentPane();
         while(cts == null) {
@@ -41,17 +39,10 @@ public class Client extends JFrame implements ActionListener {
         for(int i = 0; i < 15; i++)
             buddyList.addElement(new User("username" + i, ""));
 
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        //gbc.ipady = 20;
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-
         mainPanel = new JPanel(new BorderLayout());
-        navigationPanel = new JPanel(new GridBagLayout());
-        navigationPanel.add(buddyScrollPane, gbc);
-        navigationPanel.add(newJButton("Connect", "CONNECT", this), gbc);
 
-        mainPanel.add(navigationPanel, BorderLayout.WEST);
-        //cp.add(loginRegisterPanel);
+        mainPanel.add(buddyScrollPane, BorderLayout.CENTER);
+        mainPanel.add(newJButton("Connect", "CONNECT", this), BorderLayout.SOUTH);
         cp.add(mainPanel);
         setupMainFrame();
     }
