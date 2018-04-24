@@ -51,7 +51,7 @@ public class LoginScreen extends JDialog implements ActionListener {
         setSize(250, 250);
         setLocation(d.width/4, d.height/4);
 
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         setTitle("Login/Register");
 
@@ -66,7 +66,6 @@ public class LoginScreen extends JDialog implements ActionListener {
             System.out.println("Attempting login...");
             try {
                 cts.send("LOGIN " + userNameField.getText() + " " + passwordField.getText());
-
             } catch (IOException e) {
                 System.out.println("Unable to send message from login screen to server");
             }

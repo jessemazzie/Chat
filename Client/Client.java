@@ -11,6 +11,7 @@ import java.util.Arrays;
 
 public class Client extends JFrame implements ActionListener {
     CTS cts;
+    LoginScreen loginScreen;
     boolean isLoggedIn = false;
 
     public static void main(String[] args) {
@@ -75,7 +76,7 @@ public class Client extends JFrame implements ActionListener {
     }
 
     void connect() {
-        new LoginScreen(cts, this);
+        loginScreen = new LoginScreen(cts, this);
     }
 
     @Override

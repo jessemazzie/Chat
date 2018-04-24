@@ -36,7 +36,7 @@ public class CTS implements Runnable {
                 msg = talker.receive().trim();
                 System.out.println("Message in CTC: " + msg);
                 if(msg.equals("LOGGED_IN")) {
-                    client.setVisible(false);
+                    client.loginScreen.dispose();
                     client.isLoggedIn = true;
                 } else if(msg.startsWith("BROADCAST")) {
                     System.out.println(msg);
