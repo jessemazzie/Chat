@@ -38,10 +38,8 @@ public class CTS implements Runnable {
                 if(msg.equals("LOGGED_IN")) {
                     client.loginScreen.dispose();
                     client.isLoggedIn = true;
-                } else if(msg.startsWith("BROADCAST")) {
-                    System.out.println(msg);
-//                    messageBox.messageList.addElement(msg.substring(9));
-//                    messageBox.repaint();
+                } else if(msg.startsWith("BUDDY_REQUEST")) {
+                    System.out.println("Buddy request from: " + msg.substring(13));
                 }
             }
         } catch(IOException ioe) {

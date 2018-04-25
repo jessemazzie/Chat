@@ -37,9 +37,6 @@ public class Client extends JFrame implements ActionListener {
         buddyJList = new JList<User>(buddyList);
         buddyScrollPane = new JScrollPane(buddyJList);
 
-        for(int i = 0; i < 15; i++)
-            buddyList.addElement(new User("username" + i, ""));
-
         mainPanel = new JPanel(new BorderLayout());
 
         mainPanel.add(buddyScrollPane, BorderLayout.CENTER);

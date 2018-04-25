@@ -47,14 +47,19 @@ public class CTC implements Runnable {
                             talker.send("BAD_PASSWORD");
                         } else {
                             talker.send("LOGGED_IN");
-//                            user.ctc = this;
                         }
 
 //                        server.logUserIn(user);
                     }
-                } else if(cmd.startsWith("BROADCAST")) {
-//                    server.broadcast(cmd);
-                    //talker.send(cmd);
+                } else if(cmd.startsWith("BUDDY_REQUEST")) {
+                    commandParts = cmd.split(" ");
+
+                    if(commandParts.length != 3)
+                        System.out.println("Invalid number of parameters passed. Buddy request failed.");
+
+                    if(server.getUser(commandParts[2]) != null) {
+                        server.getUser(commandParts[2]).send("BUDDY_REQUEST " + commandParts[3]);
+                    }
                 }
             } catch (IOException ioe) {}
         }
