@@ -7,4 +7,10 @@ public class Buddy {
     Buddy(String username) {
         this.username = username;
     }
+
+
+    @Override
+    public String toString() {
+        return isOnline ? "* " + username : username;
+    }
 }
