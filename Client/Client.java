@@ -12,6 +12,7 @@ import java.util.Arrays;
 public class Client extends JFrame implements ActionListener {
     CTS cts;
     LoginScreen loginScreen;
+    DefaultListModel<Buddy> buddyList;
     boolean isLoggedIn = false;
 
     public static void main(String[] args) {
@@ -20,8 +21,8 @@ public class Client extends JFrame implements ActionListener {
 
     Client() {
         JPanel mainPanel;
-        DefaultListModel<User> buddyList;
-        JList<User> buddyJList;
+
+        JList<Buddy> buddyJList;
         JScrollPane buddyScrollPane;
         Container cp;
         cp = getContentPane();
@@ -33,8 +34,8 @@ public class Client extends JFrame implements ActionListener {
             }
         }
 
-        buddyList = new DefaultListModel<User>();
-        buddyJList = new JList<User>(buddyList);
+        buddyList = new DefaultListModel<Buddy>();
+        buddyJList = new JList<Buddy>(buddyList);
         buddyScrollPane = new JScrollPane(buddyJList);
 
         mainPanel = new JPanel(new BorderLayout());
@@ -74,6 +75,15 @@ public class Client extends JFrame implements ActionListener {
 
     void connect() {
         loginScreen = new LoginScreen(cts, this);
+    }
+
+    void showBuddyRequest(String fromUsername) {
+        String[] options = {"Accept", "Deny"};
+        if(JOptionPane.showOptionDialog(null, fromUsername + " sent you a buddy request.", "Buddy request!",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]) == 0) {
+            buddyList.addElement(new Buddy(fromUsername));
+            System.out.println("Buddy added.");
+        }
     }
 
     @Override
