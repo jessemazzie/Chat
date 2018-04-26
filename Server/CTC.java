@@ -59,6 +59,8 @@ public class CTC implements Runnable {
 
                     if(server.getUser(commandParts[2]) != null) {
                         server.getUser(commandParts[2]).send("BUDDY_REQUEST " + commandParts[3]);
+                    } else {
+                        talker.send("NONEXISTENT_USER"); // TODO: Handle this client-side.
                     }
                 }
             } catch (IOException ioe) {}

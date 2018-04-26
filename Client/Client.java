@@ -21,7 +21,7 @@ public class Client extends JFrame implements ActionListener {
 
     Client() {
         JPanel mainPanel;
-
+        JPanel buttonPanel;
         JList<Buddy> buddyJList;
         JScrollPane buddyScrollPane;
         Container cp;
@@ -38,10 +38,15 @@ public class Client extends JFrame implements ActionListener {
         buddyJList = new JList<Buddy>(buddyList);
         buddyScrollPane = new JScrollPane(buddyJList);
 
+        buttonPanel = new JPanel(new GridLayout(0,3));
+        buttonPanel.add(newJButton("Connect", "CONNECT", this));
+        buttonPanel.add(newJButton("Add Buddy", "ADD_BUDDY", this));
+        buttonPanel.add(newJButton("Remove Buddy", "REMOVE_BUDDY", this)); //TODO: Hide this if no buddy is selected.
+
         mainPanel = new JPanel(new BorderLayout());
 
         mainPanel.add(buddyScrollPane, BorderLayout.CENTER);
-        mainPanel.add(newJButton("Connect", "CONNECT", this), BorderLayout.SOUTH);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
         cp.add(mainPanel);
         setupMainFrame();
     }
@@ -86,12 +91,31 @@ public class Client extends JFrame implements ActionListener {
         }
     }
 
+    void send(String msgToSend) {
+        try {
+            cts.send(msgToSend);
+        } catch (IOException e) {
+            cts = null;
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent ae) {
         String cmd = ae.getActionCommand();
 
         if(cmd.equals("CONNECT")) {
             connect();
+        } else if(cmd.equals("ADD_BUDDY")) {
+            String buddyName = JOptionPane.showInputDialog("Enter name of buddy to add.");
+            if(buddyName.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Buddy name must not be blank.","Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                try {
+                    cts.send("BUDDY_REQUEST " + buddyName);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
