@@ -112,8 +112,8 @@ public class Client extends JFrame implements ActionListener {
             } else {
                 try {
                     cts.send("BUDDY_REQUEST " + buddyName);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
                 }
             }
         }
