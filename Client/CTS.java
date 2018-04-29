@@ -9,6 +9,7 @@ import java.net.Socket;
 public class CTS implements Runnable {
     Client client;
     Talker talker;
+    String ID;
     //MessageBox messageBox;
 
     public CTS(Client client) throws IOException {
@@ -45,7 +46,7 @@ public class CTS implements Runnable {
                 }
             }
         } catch(IOException ioe) {
-            ioe.printStackTrace();
+           client.isLoggedIn = false;
         }
     }
 }

@@ -60,16 +60,6 @@ public class Server {
         return users.get(username);
     }
 
-    public void broadcast(String strToBroadcast) {
-        Enumeration<User> userEnum;
-
-        userEnum = users.elements();
-
-        while(userEnum.hasMoreElements()) {
-            userEnum.nextElement().send(strToBroadcast);
-        }
-    }
-
     public static void main(String[] args) {
         new Server();
     }

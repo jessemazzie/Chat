@@ -87,6 +87,7 @@ public class Client extends JFrame implements ActionListener {
         if(JOptionPane.showOptionDialog(null, fromUsername + " sent you a buddy request.", "Buddy request!",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]) == 0) {
             buddyList.addElement(new Buddy(fromUsername));
+            //TODO: Send acceptance confirmation
             System.out.println("Buddy added.");
         }
     }
@@ -111,7 +112,7 @@ public class Client extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Buddy name must not be blank.","Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 try {
-                    cts.send("BUDDY_REQUEST " + buddyName);
+                    cts.send("BUDDY_REQUEST " + buddyName + " " + cts.ID);
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
