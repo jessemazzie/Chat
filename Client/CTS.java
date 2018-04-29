@@ -36,9 +36,10 @@ public class CTS implements Runnable {
             while (true) {
                 msg = talker.receive().trim();
                 System.out.println("Message in CTC: " + msg);
-                if(msg.equals("LOGGED_IN")) {
+                if(msg.startsWith("LOGGED_IN")) {
                     client.loginScreen.dispose();
                     client.isLoggedIn = true;
+                    ID = msg.substring(10);
                 } else if(msg.startsWith("BUDDY_REQUEST")) {
                     client.showBuddyRequest(msg.substring(13));
                 } else if(msg.startsWith("BUDDY_REQUEST_ACCEPTED")) {
