@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class Client extends JFrame implements ActionListener {
     CTS cts;
@@ -26,13 +25,6 @@ public class Client extends JFrame implements ActionListener {
         JScrollPane buddyScrollPane;
         Container cp;
         cp = getContentPane();
-        while(cts == null) {
-            try {
-                cts = new CTS(this);
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-        }
 
         buddyList = new DefaultListModel<Buddy>();
         buddyJList = new JList<Buddy>(buddyList);

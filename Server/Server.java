@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Enumeration;
 import java.util.Vector;
 
 public class Server {
@@ -36,26 +35,42 @@ public class Server {
         }
     }
 
+    /**
+     * This is an infinite loop that waits on new sockets to open and spins up a CTC for each new connection.
+     */
     void startAcceptingConnections() {
         Socket tempSocket;
 
         try {
             while(true) {
                 tempSocket = serverSocket.accept();
-                new CTC(tempSocket, this);
+                new CTC(tempSocket, this); //TODO: Maybe find a more clever way to assign these to users.
             }
         } catch (IOException e) {}
     }
 
+    /**
+     * Adds a user to the user hashtable. Used for registration.
+     * TODO: Maybe rename?
+     * @param newUser
+     */
     void addUser(User newUser) {
-        logUserIn(newUser);
         users.addUser(newUser);
     }
 
+    /**
+     * Adds a user to the vector of currently logged in users.
+     * @param user
+     */
     void logUserIn(User user) {
         loggedInUsers.add(user);
     }
 
+    /**
+     * Wrapper method for getting a specific user from the users hashtable.
+     * @param username
+     * @return user. Null if user does not exist
+     */
     User getUser(String username) {
         return users.get(username);
     }

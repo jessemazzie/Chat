@@ -12,10 +12,10 @@ public class CTS implements Runnable {
     String ID;
     //MessageBox messageBox;
 
-    public CTS(Client client) throws IOException {
+    public CTS(Client client, String ID) throws IOException {
 
         this.client = client;
-        talker = new Talker("127.0.0.1", 1337, "");
+        talker = new Talker("127.0.0.1", 1337, ID);
 
         new Thread(this).start();
     }
@@ -29,6 +29,9 @@ public class CTS implements Runnable {
         talker.send(stringToSend);
     }
 
+    /**
+     * Spins up a new thread to infinitely loop, waiting for commands from the server.
+     */
     @Override
     public void run() {
         String msg;
@@ -40,10 +43,10 @@ public class CTS implements Runnable {
                     client.loginScreen.dispose();
                     client.isLoggedIn = true;
                     ID = msg.substring(10);
-                } else if(msg.startsWith("BUDDY_REQUEST")) {
-                    client.showBuddyRequest(msg.substring(13));
                 } else if(msg.startsWith("BUDDY_REQUEST_ACCEPTED")) {
                     client.buddyList.addElement(new Buddy(msg.substring(22)));
+                } else if(msg.startsWith("BUDDY_REQUEST")) {
+                    client.showBuddyRequest(msg.substring(13));
                 }
             }
         } catch(IOException ioe) {

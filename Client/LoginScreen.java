@@ -62,6 +62,15 @@ public class LoginScreen extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         String cmd = ae.getActionCommand();
 
+        while(cts == null) {
+            try {
+                cts = new CTS(client, userNameField.getText());
+                client.cts = cts;
+            } catch (IOException ioe) {
+                System.out.println("Failed to connect. Retrying...");
+            }
+        }
+
         if(cmd.equals("LOGIN")) {
             System.out.println("Attempting login...");
             try {
