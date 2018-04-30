@@ -23,9 +23,12 @@ public class CTC implements Runnable {
      * @param stringToSend
      * @throws IOException
      */
-    void send(String stringToSend) throws IOException {
-        talker.send(stringToSend);
-        //TODO: Replace all calls to 'talker.send(s)' with calls to this method.
+    void send(String stringToSend) {
+        try {
+            talker.send(stringToSend);
+        } catch (IOException e) {
+            System.out.println("Failed to send message: " + stringToSend);
+        }
     }
 
     /**
@@ -60,11 +63,11 @@ public class CTC implements Runnable {
                         //Check if user exists by attempting to get user from hashtable in server
                         user = server.getUser(commandParts[1].trim());
                         if(user == null)
-                            talker.send("BAD_USERNAME");
+                            send("BAD_USERNAME");
                         else if(!user.password.equals(commandParts[2].trim())) {
-                            talker.send("BAD_PASSWORD");
+                            send("BAD_PASSWORD");
                         } else {
-                            talker.send("LOGGED_IN " + commandParts[1]); //Return the username so the CTS can set it
+                            send("LOGGED_IN " + commandParts[1]); //Return the username so the CTS can set it
                             user.ctc = this; //Assign the user a CTC so the server can talk to it.
                             server.logUserIn(user);
                         }
@@ -83,10 +86,12 @@ public class CTC implements Runnable {
                     if(commandParts.length != 3)
                         System.out.println("Invalid number of parameters passed. Buddy request failed.");
 
-                    if(server.getUser(commandParts[1]) != null) { //TODO: Store this in a 'user' variable for simplicity
-                        server.getUser(commandParts[1]).send("BUDDY_REQUEST " + commandParts[2]);
+                    user = server.getUser(commandParts[1]);
+
+                    if(user != null) { 
+                        user.send("BUDDY_REQUEST " + commandParts[2]);
                     } else {
-                        talker.send("NONEXISTENT_USER"); // TODO: Handle this client-side.
+                        send("NONEXISTENT_USER");
                     }
                 }
             } catch (IOException ioe) {

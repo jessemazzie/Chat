@@ -94,6 +94,10 @@ public class Client extends JFrame implements ActionListener {
         }
     }
 
+    void displayError(String message, String title) {
+        JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
+    }
+
     @Override
     public void actionPerformed(ActionEvent ae) {
         String cmd = ae.getActionCommand();
@@ -103,13 +107,9 @@ public class Client extends JFrame implements ActionListener {
         } else if(cmd.equals("ADD_BUDDY")) {
             String buddyName = JOptionPane.showInputDialog("Enter name of buddy to add.");
             if(buddyName.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Buddy name must not be blank.","Error", JOptionPane.ERROR_MESSAGE);
+                displayError("Buddy name must not be blank.","Error");
             } else {
-                try {
-                    cts.send("BUDDY_REQUEST " + buddyName + " " + cts.ID);
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
+                send("BUDDY_REQUEST " + buddyName + " " + cts.ID);
             }
         }
     }

@@ -48,6 +48,8 @@ public class CTS implements Runnable {
                     client.buddyList.addElement(new Buddy(msg.substring(22)));
                 } else if(msg.startsWith("BUDDY_REQUEST")) {
                     client.showBuddyRequest(msg.substring(13));
+                } else if(msg.equals("NONEXISTENT_USER")) {
+                    client.displayError("User does not exist. Please try again.", "User does not exist");
                 }
             }
         } catch(IOException ioe) {
