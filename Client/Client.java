@@ -84,7 +84,7 @@ public class Client extends JFrame implements ActionListener {
 
     void showBuddyRequest(String fromUsername) {
         String[] options = {"Accept", "Deny"};
-        if(JOptionPane.showOptionDialog(null, fromUsername + " sent you a buddy request.", "Buddy request!",
+        if(JOptionPane.showOptionDialog(this, fromUsername + " sent you a buddy request.", "Buddy request!",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]) == 0) {
             buddyList.addElement(new Buddy(fromUsername));
             //TODO: Send acceptance confirmation

@@ -47,6 +47,7 @@ public class CTC implements Runnable {
                             talker.send("BAD_PASSWORD");
                         } else {
                             talker.send("LOGGED_IN " + commandParts[1]); //Return the username so the CTS can set it
+                            user.ctc = this; //Assign the user a CTC
                             server.logUserIn(user);
                         }
 
@@ -59,7 +60,8 @@ public class CTC implements Runnable {
                         System.out.println("Invalid number of parameters passed. Buddy request failed.");
 
                     if(server.getUser(commandParts[1]) != null) {
-                        talker.send("BUDDY_REQUEST " + commandParts[1] + " " + commandParts[2]);
+                        server.getUser(commandParts[1]).send("BUDDY_REQUEST " + commandParts[2]);
+                        //talker.send("BUDDY_REQUEST " + commandParts[2]); //TODO: Send to the correct user
                     } else {
                         talker.send("NONEXISTENT_USER"); // TODO: Handle this client-side.
                     }
