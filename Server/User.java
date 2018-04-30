@@ -19,11 +19,23 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        friendsList = new Vector<String>();
     }
 
+    /**
+     * Instantiate user from DataInputStream.
+     * Reads username, password, and contents of friends list from file.
+     * @param dis
+     * @throws IOException
+     */
     User(DataInputStream dis) throws IOException {
+        int size;
         this.username = dis.readUTF();
         this.password = dis.readUTF();
+        size = dis.readInt(); //size of friends list.
+        friendsList = new Vector<String>(size);
+        for(int i = 0; i < size; i++)
+            friendsList.add(dis.readUTF());
     }
 
     /**
@@ -39,6 +51,14 @@ public class User {
     }
 
     /**
+     * Add someone to friend list.
+     * @param friendName
+     */
+    void addFriend(String friendName) {
+        friendsList.add(friendName);
+    }
+
+    /**
      * Writes the username and password of this user to a DataOutputStream.
      * @param dos
      * @throws IOException
@@ -46,8 +66,10 @@ public class User {
     void store(DataOutputStream dos) throws IOException {
         dos.writeUTF(username);
         dos.writeUTF(password);
-        //TODO: Write size of friend list
-        //TODO: Write all usernames in friend list.
+        dos.writeInt(friendsList.size()); //size of friends list
+        for(String s : friendsList) {
+            dos.writeUTF(s);
+        }
     }
 
     @Override

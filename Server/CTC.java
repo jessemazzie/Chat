@@ -73,13 +73,9 @@ public class CTC implements Runnable {
                         }
                     }
                 } else if(cmd.startsWith("BUDDY_REQUEST_ACCEPTED")) {
-                    System.out.println(cmd);
                     commandParts = cmd.split(" ");
+                    server.getUser(commandParts[1]).send("BUDDY_REQUEST_ACCEPTED " + commandParts[2]);
 
-                    if(server.getUser(commandParts[1]) != null) {
-                        server.getUser(commandParts[1]).send("BUDDY_REQUEST_ACCEPTED " + commandParts[2]);
-                        //talker.send("BUDDY_REQUEST " + commandParts[2]); //TODO: Send to the correct user
-                    }
                 } else if(cmd.startsWith("BUDDY_REQUEST")) {
                     commandParts = cmd.split(" ");
                     //Needs to include command, username, and password.
@@ -88,7 +84,7 @@ public class CTC implements Runnable {
 
                     user = server.getUser(commandParts[1]);
 
-                    if(user != null) { 
+                    if(user != null) {
                         user.send("BUDDY_REQUEST " + commandParts[2]);
                     } else {
                         send("NONEXISTENT_USER");
