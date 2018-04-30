@@ -89,7 +89,9 @@ public class CTC implements Runnable {
                         talker.send("NONEXISTENT_USER"); // TODO: Handle this client-side.
                     }
                 }
-            } catch (IOException ioe) {}
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
         }
     }
 }

@@ -42,6 +42,7 @@ public class CTS implements Runnable {
                 if(msg.startsWith("LOGGED_IN")) {
                     client.loginScreen.dispose();
                     client.isLoggedIn = true;
+                    client.setTitle("Chat - Logged in as " + msg.substring(10));
                     ID = msg.substring(10);
                 } else if(msg.startsWith("BUDDY_REQUEST_ACCEPTED")) {
                     client.buddyList.addElement(new Buddy(msg.substring(22)));
