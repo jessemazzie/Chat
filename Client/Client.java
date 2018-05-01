@@ -3,15 +3,20 @@ package Client;
 import Server.User;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 
-public class Client extends JFrame implements ActionListener {
+public class Client extends JFrame implements ActionListener, MouseListener, ListSelectionListener {
     CTS cts;
     LoginScreen loginScreen;
     DefaultListModel<Buddy> buddyList;
+    JList<Buddy> buddyJList;
     boolean isLoggedIn = false;
 
     public static void main(String[] args) {
@@ -21,7 +26,6 @@ public class Client extends JFrame implements ActionListener {
     Client() {
         JPanel mainPanel;
         JPanel buttonPanel;
-        JList<Buddy> buddyJList;
         JScrollPane buddyScrollPane;
         Container cp;
         cp = getContentPane();
@@ -29,6 +33,9 @@ public class Client extends JFrame implements ActionListener {
         buddyList = new DefaultListModel<Buddy>();
         buddyJList = new JList<Buddy>(buddyList);
         buddyScrollPane = new JScrollPane(buddyJList);
+
+        buddyJList.addMouseListener(this);
+        buddyJList.addListSelectionListener(this);
 
         buttonPanel = new JPanel(new GridLayout(0,3));
         buttonPanel.add(newJButton("Connect", "CONNECT", this));
@@ -113,4 +120,29 @@ public class Client extends JFrame implements ActionListener {
             }
         }
     }
+
+    @Override
+    public void mouseClicked(MouseEvent me) {
+        System.out.println("It was the JList.");
+        if(me.getClickCount() == 2) {
+            buddyList.get(buddyJList.getSelectedIndex()).chatWindow = new ChatWindow("Temp");
+        }
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent lse) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent me) {}
+
+    @Override
+    public void mouseReleased(MouseEvent me) {}
+
+    @Override
+    public void mouseEntered(MouseEvent me) {}
+
+    @Override
+    public void mouseExited(MouseEvent me) {}
 }

@@ -26,7 +26,7 @@ public class ChatWindow extends JFrame {
 
         tk = Toolkit.getDefaultToolkit();
         d = tk.getScreenSize();
-        setSize(250, 250);
+        setSize(400, 250);
         setLocation(d.width/4, d.height/4);
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
