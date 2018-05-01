@@ -6,6 +6,7 @@ package Client;
 public class Buddy {
     String username;
     boolean isOnline;
+    ChatWindow chatWindow;
 
     Buddy(String username) {
         this.username = username;
