@@ -10,6 +10,7 @@ public class LoginScreen extends JDialog implements ActionListener {
     CTS cts;
     Client client;
     Container cp;
+    JButton loginButton;
     JTextField userNameField;
     JPasswordField passwordField;
 
@@ -32,7 +33,9 @@ public class LoginScreen extends JDialog implements ActionListener {
 
         buttonPanel = new JPanel(new BorderLayout());
 
-        buttonPanel.add(Client.newJButton("Login", "LOGIN", this), BorderLayout.NORTH);
+        loginButton = Client.newJButton("Login", "LOGIN", this);
+        getRootPane().setDefaultButton(loginButton);
+        buttonPanel.add(loginButton, BorderLayout.NORTH);
         buttonPanel.add(Client.newJButton("Register", "REGISTER", this), BorderLayout.SOUTH);
 
         cp = getContentPane();
