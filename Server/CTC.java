@@ -41,7 +41,7 @@ public class CTC implements Runnable {
         User user;
         while(true) {
             try {
-                cmd = talker.receive();
+                cmd = talker.receive().trim();
 
                 if(cmd.startsWith("REGISTER")) {
                     commandParts = cmd.split(" ");
@@ -49,6 +49,7 @@ public class CTC implements Runnable {
                     if (commandParts.length != 3)
                         System.out.println("Invalid number of parameters passed. Registration failed.");
                     else {
+                        //TODO: Check if username already taken
                         System.out.println("Registered new username: " + commandParts[1] + " password: " + commandParts[2]);
                         user = new User(commandParts[1].trim(), commandParts[2].trim());
                         user.ctc = this;
@@ -86,6 +87,8 @@ public class CTC implements Runnable {
 
                     if(user != null) {
                         user.send("BUDDY_REQUEST " + commandParts[2]);
+                    } else if(commandParts[1].equals(commandParts[2])) {
+                        user.send("CANT_BUDDY_SELF");
                     } else {
                         send("NONEXISTENT_USER");
                     }

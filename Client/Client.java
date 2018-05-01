@@ -16,6 +16,7 @@ public class Client extends JFrame implements ActionListener, MouseListener, Lis
     CTS cts;
     LoginScreen loginScreen;
     DefaultListModel<Buddy> buddyList;
+    JButton removeBuddyButton;
     JList<Buddy> buddyJList;
     boolean isLoggedIn = false;
 
@@ -37,10 +38,13 @@ public class Client extends JFrame implements ActionListener, MouseListener, Lis
         buddyJList.addMouseListener(this);
         buddyJList.addListSelectionListener(this);
 
+        removeBuddyButton = newJButton("Remove Buddy", "REMOVE_BUDDY", this);
+        removeBuddyButton.setEnabled(false);
+
         buttonPanel = new JPanel(new GridLayout(0,3));
         buttonPanel.add(newJButton("Connect", "CONNECT", this));
         buttonPanel.add(newJButton("Add Buddy", "ADD_BUDDY", this));
-        buttonPanel.add(newJButton("Remove Buddy", "REMOVE_BUDDY", this)); //TODO: Hide this if no buddy is selected.
+        buttonPanel.add(removeBuddyButton); //TODO: Hide this if no buddy is selected.
 
         mainPanel = new JPanel(new BorderLayout());
 
@@ -124,14 +128,18 @@ public class Client extends JFrame implements ActionListener, MouseListener, Lis
     @Override
     public void mouseClicked(MouseEvent me) {
         System.out.println("It was the JList.");
-        if(me.getClickCount() == 2) {
+        if(me.getClickCount() >= 2) { //using == sometimes causes bug that will not open window on accidental triple click.
             buddyList.get(buddyJList.getSelectedIndex()).chatWindow = new ChatWindow("Temp");
         }
     }
 
     @Override
     public void valueChanged(ListSelectionEvent lse) {
-
+        //TODO: Could do this in one line.
+        if(buddyJList.isSelectionEmpty())
+            removeBuddyButton.setEnabled(false);
+        else
+            removeBuddyButton.setEnabled(true);
     }
 
     @Override
