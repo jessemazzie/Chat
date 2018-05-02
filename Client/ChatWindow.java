@@ -1,15 +1,22 @@
 package Client;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
 import javax.swing.text.html.HTMLDocument;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class ChatWindow extends JFrame {
+public class ChatWindow extends JFrame implements ActionListener, DocumentListener {
     JEditorPane messageBox;
+    JTextField messageField;
+    JButton sendButton;
+    String buddyName;
 
     /**
      * Constructor that accepts the username of the buddy with whom you want to chat.
@@ -17,18 +24,30 @@ public class ChatWindow extends JFrame {
      */
     ChatWindow(String buddyName) {
         Container cp;
+        JPanel inputContainer;
         cp = getContentPane();
+
+        this.buddyName = buddyName;
 
         messageBox = new JEditorPane();
         messageBox.setContentType("text/html");
         messageBox.setEditable(false);
 
+        messageField = new JTextField(25);
+        messageField.getDocument().addDocumentListener(this);
+
+        sendButton = Client.newJButton("Send", "SEND", this);
+
+        inputContainer = new JPanel(new BorderLayout());
+        inputContainer.add(messageField, BorderLayout.CENTER);
+        inputContainer.add(sendButton, BorderLayout.EAST);
+
         cp.add(new JScrollPane(messageBox), BorderLayout.CENTER);
+        cp.add(inputContainer, BorderLayout.SOUTH);
         setupMainFrame(buddyName);
-        addMessage("HELLO");
     }
 
-    void addMessage(String msg) {
+    void addMessage(String msg, boolean isFromMe) {
         HTMLDocument doc;
         Element rootElement;
         Element bodyElement;
@@ -37,14 +56,25 @@ public class ChatWindow extends JFrame {
         rootElement = doc.getRootElements()[0]; //only one root element exists so it will always be at index 0.
         bodyElement = rootElement.getElement(0);
         try {
-            doc.insertBeforeEnd(bodyElement, "<div alignment = 'left' font color = 'blue'>" + msg + "</div>");
+            if(isFromMe)
+                doc.insertBeforeEnd(bodyElement, "<div alignment = 'left' font color = 'blue'> Me: " + msg + "</div>");
+            else
+                doc.insertBeforeEnd(bodyElement, "<div alignment = 'left' font color = 'red'>" + buddyName + ": " + msg + "</div>");
         } catch (BadLocationException ble) {
             System.out.println("y tho");
             ble.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         messageBox.repaint();
+    }
+
+    void maybeToggleSendButton() {
+        if(messageField.getText().trim().isEmpty())
+            sendButton.setEnabled(false);
+        else
+            sendButton.setEnabled(true);
     }
 
     void setupMainFrame(String buddyName) {
@@ -61,5 +91,27 @@ public class ChatWindow extends JFrame {
         setTitle("Chat with " + buddyName);
 
         setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        String cmd = ae.getActionCommand();
+
+        if(cmd.equals("SEND"));
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        maybeToggleSendButton();
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        maybeToggleSendButton();
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+        maybeToggleSendButton();
     }
 }

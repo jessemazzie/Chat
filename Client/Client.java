@@ -91,7 +91,7 @@ public class Client extends JFrame implements ActionListener, MouseListener, Lis
         if(JOptionPane.showOptionDialog(this, fromUsername + " sent you a buddy request.", "Buddy request!",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]) == 0) {
             buddyList.addElement(new Buddy(fromUsername));
-            //TODO: Send acceptance confirmation
+
             send("BUDDY_REQUEST_ACCEPTED " + fromUsername + " " + cts.ID);
             System.out.println("Buddy added.");
         }
