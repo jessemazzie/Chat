@@ -88,9 +88,19 @@ public class CTC implements Runnable {
                     if(user != null) {
                         user.send("BUDDY_REQUEST " + commandParts[2]);
                     } else if(commandParts[1].equals(commandParts[2])) {
-                        user.send("CANT_BUDDY_SELF");
+                        send("CANT_BUDDY_SELF");
                     } else {
                         send("NONEXISTENT_USER");
+                    }
+                } else if(cmd.startsWith("MESSAGE")) {
+                    commandParts = cmd.split(" ", 4); //limit 4
+
+                    user = server.getUser(commandParts[1]);
+
+                    if(user == null);
+                        //TODO: Handle this.
+                    else if(commandParts[1].equals(commandParts[2])) {
+                        user.send("MESSAGE " + " " + commandParts[2] + " " + commandParts[3]);
                     }
                 }
             } catch (IOException ioe) {
