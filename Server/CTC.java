@@ -100,7 +100,7 @@ public class CTC implements Runnable {
                     if(user == null);
                         //TODO: Handle this.
                     else {
-                        user.send("MESSAGE " + " " + commandParts[2] + " " + commandParts[3]);
+                        user.send("MESSAGE " + commandParts[2] + " " + commandParts[3]);
                     }
                 } else if(cmd.startsWith("GET_FRIENDS ")) {
                     String replyMsg = "";

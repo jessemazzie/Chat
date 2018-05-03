@@ -38,7 +38,7 @@ public class CTS implements Runnable {
         try {
             while (true) {
                 msg = talker.receive().trim();
-                System.out.println("Message in CTC: " + msg);
+                System.out.println("Message in CTS: " + msg);
                 if(msg.startsWith("LOGGED_IN")) {
                     client.loginScreen.dispose();
                     client.isLoggedIn = true;
@@ -56,11 +56,14 @@ public class CTS implements Runnable {
                     parts = msg.split(" ", 3);
 
                     if(parts.length == 3) {
+                        System.out.println("USERNAME HERE: " + parts[1]);
+                        System.out.println("MESSAGE HERE: " + parts[2]);
                         Buddy buddy = client.getBuddy(parts[1].trim());
+                        System.out.println(buddy.toString());
                         if(buddy.chatWindow == null)
                             buddy.chatWindow = new ChatWindow(buddy.username, client);
-                        else
-                            buddy.chatWindow.addMessage( parts[3], false);
+
+                        buddy.chatWindow.addMessage(parts[2], false);
                     } else
                         System.out.println("Shit's broken, yo.");
                 }

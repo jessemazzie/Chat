@@ -28,7 +28,7 @@ public class ChatWindow extends JFrame implements ActionListener, DocumentListen
         JPanel inputContainer;
         cp = getContentPane();
 
-        this.buddyName = buddyName;
+        this.buddyName = buddyName.trim();
         this.client = client;
 
         messageBox = new JEditorPane();
@@ -101,7 +101,9 @@ public class ChatWindow extends JFrame implements ActionListener, DocumentListen
         String cmd = ae.getActionCommand();
 
         if(cmd.equals("SEND")) {
-            client.send("MESSAGE " + buddyName + " " + client.cts.ID + " " + messageField.getText());
+            addMessage(messageField.getText(), true);
+            client.send("MESSAGE " + buddyName.trim() + " " + client.cts.ID.trim() + " " + messageField.getText());
+            messageField.setText("");
         }
     }
 

@@ -126,10 +126,12 @@ public class Client extends JFrame implements ActionListener, MouseListener, Lis
             connect();
         } else if(cmd.equals("ADD_BUDDY")) {
             String buddyName = JOptionPane.showInputDialog("Enter name of buddy to add.");
-            if(buddyName.trim().isEmpty()) {
-                displayError("Buddy name must not be blank.","Error");
-            } else {
-                send("BUDDY_REQUEST " + buddyName + " " + cts.ID);
+            if(buddyName != null) {
+                if (buddyName.trim().isEmpty()) {
+                    displayError("Buddy name must not be blank.", "Error");
+                } else {
+                    send("BUDDY_REQUEST " + buddyName + " " + cts.ID);
+                }
             }
         }
     }
@@ -138,7 +140,7 @@ public class Client extends JFrame implements ActionListener, MouseListener, Lis
     public void mouseClicked(MouseEvent me) {
         System.out.println("It was the JList.");
         if(me.getClickCount() >= 2) { //using == sometimes causes bug that will not open window on accidental triple click.
-            buddyList.get(buddyJList.getSelectedIndex()).chatWindow = new ChatWindow(cts.ID, this); //TODO: Am I assigning the right username here?
+            buddyList.get(buddyJList.getSelectedIndex()).chatWindow = new ChatWindow(buddyList.get(buddyJList.getSelectedIndex()).username, this); //TODO: Am I assigning the right username here?
         }
     }
 

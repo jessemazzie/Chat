@@ -9,7 +9,7 @@ public class Buddy {
     ChatWindow chatWindow;
 
     Buddy(String username) {
-        this.username = username;
+        this.username = username.trim();
     }
 
     @Override
