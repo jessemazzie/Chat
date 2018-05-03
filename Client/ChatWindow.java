@@ -17,17 +17,19 @@ public class ChatWindow extends JFrame implements ActionListener, DocumentListen
     JTextField messageField;
     JButton sendButton;
     String buddyName;
+    Client client;
 
     /**
      * Constructor that accepts the username of the buddy with whom you want to chat.
      * @param buddyName
      */
-    ChatWindow(String buddyName) {
+    ChatWindow(String buddyName, Client client) {
         Container cp;
         JPanel inputContainer;
         cp = getContentPane();
 
         this.buddyName = buddyName;
+        this.client = client;
 
         messageBox = new JEditorPane();
         messageBox.setContentType("text/html");
@@ -37,6 +39,7 @@ public class ChatWindow extends JFrame implements ActionListener, DocumentListen
         messageField.getDocument().addDocumentListener(this);
 
         sendButton = Client.newJButton("Send", "SEND", this);
+        sendButton.setEnabled(false); //disabled until someone types in the chatbox.
 
         inputContainer = new JPanel(new BorderLayout());
         inputContainer.add(messageField, BorderLayout.CENTER);
@@ -97,7 +100,9 @@ public class ChatWindow extends JFrame implements ActionListener, DocumentListen
     public void actionPerformed(ActionEvent ae) {
         String cmd = ae.getActionCommand();
 
-        if(cmd.equals("SEND"));
+        if(cmd.equals("SEND")) {
+            client.send("MESSAGE " + buddyName + " " + client.cts.ID + " " + messageField.getText());
+        }
     }
 
     @Override

@@ -54,6 +54,15 @@ public class Client extends JFrame implements ActionListener, MouseListener, Lis
         setupMainFrame();
     }
 
+    Buddy getBuddy(String buddyName) {
+        for(int i = 0; i < buddyList.size(); i++) {
+            if(buddyList.get(i).username.equals(buddyName))
+                return buddyList.get(i);
+        }
+
+        return null; //if no buddy was found.
+    }
+
     public static JButton newJButton(String label, String actionCommand, ActionListener al) {
         JButton tempButton = new JButton();
 
@@ -129,7 +138,7 @@ public class Client extends JFrame implements ActionListener, MouseListener, Lis
     public void mouseClicked(MouseEvent me) {
         System.out.println("It was the JList.");
         if(me.getClickCount() >= 2) { //using == sometimes causes bug that will not open window on accidental triple click.
-            buddyList.get(buddyJList.getSelectedIndex()).chatWindow = new ChatWindow("Temp");
+            buddyList.get(buddyJList.getSelectedIndex()).chatWindow = new ChatWindow(cts.ID, this); //TODO: Am I assigning the right username here?
         }
     }
 
@@ -142,6 +151,9 @@ public class Client extends JFrame implements ActionListener, MouseListener, Lis
             removeBuddyButton.setEnabled(true);
     }
 
+    /**
+     * These methods needed to be implemented to be a MouseListener but there is no use for them in this class.
+     */
     @Override
     public void mousePressed(MouseEvent me) {}
 

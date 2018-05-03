@@ -99,9 +99,23 @@ public class CTC implements Runnable {
 
                     if(user == null);
                         //TODO: Handle this.
-                    else if(commandParts[1].equals(commandParts[2])) {
+                    else {
                         user.send("MESSAGE " + " " + commandParts[2] + " " + commandParts[3]);
                     }
+                } else if(cmd.startsWith("GET_FRIENDS ")) {
+                    String replyMsg = "";
+
+                    commandParts = cmd.split(" ");
+
+                    user = server.getUser(commandParts[1]);
+
+                    //TODO: CHECK IF USER VALID
+
+                    for(String s : user.friendsList) {
+                        replyMsg += " " + s;
+                    }
+
+                    send("FRIENDS_LIST " + replyMsg);
                 }
             } catch (IOException ioe) {
                 ioe.printStackTrace();

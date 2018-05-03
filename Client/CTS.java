@@ -50,6 +50,19 @@ public class CTS implements Runnable {
                     client.showBuddyRequest(msg.substring(13));
                 } else if(msg.equals("NONEXISTENT_USER")) {
                     client.displayError("User does not exist. Please try again.", "User does not exist");
+                } else if(msg.startsWith("MESSAGE")) {
+                    String[] parts;
+
+                    parts = msg.split(" ", 3);
+
+                    if(parts.length == 3) {
+                        Buddy buddy = client.getBuddy(parts[1].trim());
+                        if(buddy.chatWindow == null)
+                            buddy.chatWindow = new ChatWindow(buddy.username, client);
+                        else
+                            buddy.chatWindow.addMessage( parts[3], false);
+                    } else
+                        System.out.println("Shit's broken, yo.");
                 }
             }
         } catch(IOException ioe) {
