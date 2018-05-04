@@ -6,13 +6,18 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 
-public class Client extends JFrame implements ActionListener, MouseListener, ListSelectionListener {
+public class Client extends JFrame implements ActionListener, MouseListener, ListSelectionListener, DropTargetListener {
     CTS cts;
     LoginScreen loginScreen;
     DefaultListModel<Buddy> buddyList;
@@ -153,6 +158,14 @@ public class Client extends JFrame implements ActionListener, MouseListener, Lis
             removeBuddyButton.setEnabled(true);
     }
 
+    @Override
+    public void drop(DropTargetDropEvent dtde) {
+        Transferable transferableData;
+
+        transferableData = dtde.getTransferable();
+
+    }
+
     /**
      * These methods needed to be implemented to be a MouseListener but there is no use for them in this class.
      */
@@ -167,4 +180,19 @@ public class Client extends JFrame implements ActionListener, MouseListener, Lis
 
     @Override
     public void mouseExited(MouseEvent me) {}
+
+    /**
+     * These methods needed to be implemented to be a DropTargetListener but there is no use for them in this class.
+     */
+    @Override
+    public void dragEnter(DropTargetDragEvent dtde) {}
+
+    @Override
+    public void dragOver(DropTargetDragEvent dtde) {}
+
+    @Override
+    public void dropActionChanged(DropTargetDragEvent dtde) {}
+
+    @Override
+    public void dragExit(DropTargetEvent dte) {}
 }

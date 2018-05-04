@@ -51,7 +51,6 @@ public class Server {
 
     /**
      * Adds a user to the user hashtable. Used for registration.
-     * TODO: Maybe rename?
      * @param newUser
      */
     void addUser(User newUser) {
