@@ -76,6 +76,8 @@ public class CTC implements Runnable {
                 } else if(cmd.startsWith("BUDDY_REQUEST_ACCEPTED")) {
                     commandParts = cmd.split(" ");
                     server.getUser(commandParts[1]).send("BUDDY_REQUEST_ACCEPTED " + commandParts[2]);
+                    server.getUser(commandParts[1]).friendsList.add(commandParts[2]);
+                    server.getUser(commandParts[2]).friendsList.add(commandParts[1]);
 
                 } else if(cmd.startsWith("BUDDY_REQUEST")) {
                     commandParts = cmd.split(" ");
@@ -102,8 +104,8 @@ public class CTC implements Runnable {
                     else {
                         user.send("MESSAGE " + commandParts[2] + " " + commandParts[3]);
                     }
-                } else if(cmd.startsWith("GET_FRIENDS ")) {
-                    String replyMsg = "";
+                } else if(cmd.startsWith("GET_BUDDIES")) {
+                    String replyMsg = "BUDDY_LIST ";
 
                     commandParts = cmd.split(" ");
 
@@ -112,10 +114,10 @@ public class CTC implements Runnable {
                     //TODO: CHECK IF USER VALID
 
                     for(String s : user.friendsList) {
-                        replyMsg += " " + s;
+                        replyMsg += (" " + s.trim());
                     }
 
-                    send("FRIENDS_LIST " + replyMsg);
+                    send(replyMsg);
                 }
             } catch (IOException ioe) {
                 ioe.printStackTrace();

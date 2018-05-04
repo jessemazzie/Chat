@@ -2,6 +2,7 @@ package Client;
 
 import Shared.Talker;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -43,7 +44,9 @@ public class CTS implements Runnable {
                     client.loginScreen.dispose();
                     client.isLoggedIn = true;
                     client.setTitle("Chat - Logged in as " + msg.substring(10));
-                    ID = msg.substring(10);
+                    ID = msg.substring(10).trim();
+
+                    send("GET_BUDDIES " + ID);
                 } else if(msg.startsWith("BUDDY_REQUEST_ACCEPTED")) {
                     client.buddyList.addElement(new Buddy(msg.substring(22)));
                 } else if(msg.startsWith("BUDDY_REQUEST")) {
@@ -66,6 +69,16 @@ public class CTS implements Runnable {
                         buddy.chatWindow.addMessage(parts[2], false);
                     } else
                         System.out.println("Shit's broken, yo.");
+                } else if(msg.startsWith("BUDDY_LIST")) {
+                    String[] parts;
+
+                    parts = msg.split(" ");
+                    if(parts.length > 1) {
+                        for(int i = 1; i < parts.length; i++) {
+                            client.buddyList.addElement(new Buddy(parts[i]));
+                            client.buddyJList.repaint();
+                        }
+                    }
                 }
             }
         } catch(IOException ioe) {
