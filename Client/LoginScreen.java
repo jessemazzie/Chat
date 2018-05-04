@@ -1,16 +1,19 @@
 package Client;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class LoginScreen extends JDialog implements ActionListener {
+public class LoginScreen extends JDialog implements ActionListener, DocumentListener {
     CTS cts;
     Client client;
     Container cp;
     JButton loginButton;
+    JButton registerButton;
     JTextField userNameField;
     JPasswordField passwordField;
 
@@ -24,19 +27,24 @@ public class LoginScreen extends JDialog implements ActionListener {
         textFieldsPanel = new JPanel(new GridLayout(2, 2));
 
         userNameField = new JTextField();
+        userNameField.getDocument().addDocumentListener(this);
         textFieldsPanel.add(new JLabel("Username: "));
         textFieldsPanel.add(userNameField);
 
         passwordField = new JPasswordField();
+        passwordField.getDocument().addDocumentListener(this);
         textFieldsPanel.add(new JLabel("Password: "));
         textFieldsPanel.add(passwordField);
 
         buttonPanel = new JPanel(new BorderLayout());
 
         loginButton = Client.newJButton("Login", "LOGIN", this);
+        loginButton.setEnabled(false);
         getRootPane().setDefaultButton(loginButton);
+        registerButton = Client.newJButton("Register", "REGISTER", this);
+        registerButton.setEnabled(false);
         buttonPanel.add(loginButton, BorderLayout.NORTH);
-        buttonPanel.add(Client.newJButton("Register", "REGISTER", this), BorderLayout.SOUTH);
+        buttonPanel.add(registerButton, BorderLayout.SOUTH);
 
         cp = getContentPane();
         cp.add(textFieldsPanel, BorderLayout.NORTH);
@@ -59,6 +67,16 @@ public class LoginScreen extends JDialog implements ActionListener {
         setTitle("Login/Register");
 
         setVisible(true);
+    }
+
+    void maybeToggleSendButton() {
+        if (userNameField.getText().trim().isEmpty() || passwordField.getText().trim().isEmpty() || userNameField.getText().contains("\n") || passwordField.getText().contains("\n") || userNameField.getText().contains(" ") || passwordField.getText().contains(" ")) {
+            loginButton.setEnabled(false);
+            registerButton.setEnabled(false);
+        } else {
+            loginButton.setEnabled(true);
+            registerButton.setEnabled(true);
+        }
     }
 
     @Override
@@ -89,5 +107,20 @@ public class LoginScreen extends JDialog implements ActionListener {
                 System.out.println("Unable to send message from registration screen to server");
             }
         }
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        maybeToggleSendButton();
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        maybeToggleSendButton();
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+        maybeToggleSendButton();
     }
 }

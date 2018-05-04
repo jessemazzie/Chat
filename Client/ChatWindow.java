@@ -40,6 +40,7 @@ public class ChatWindow extends JFrame implements ActionListener, DocumentListen
 
         sendButton = Client.newJButton("Send", "SEND", this);
         sendButton.setEnabled(false); //disabled until someone types in the chatbox.
+        getRootPane().setDefaultButton(sendButton);
 
         inputContainer = new JPanel(new BorderLayout());
         inputContainer.add(messageField, BorderLayout.CENTER);
@@ -102,8 +103,8 @@ public class ChatWindow extends JFrame implements ActionListener, DocumentListen
 
         if(cmd.equals("SEND")) {
             addMessage(messageField.getText(), true);
-            client.send("MESSAGE " + buddyName.trim() + " " + client.cts.ID.trim() + " " + messageField.getText());
-            messageField.setText("");
+            client.send("MESSAGE " + buddyName.trim() + " " + client.cts.ID.trim() + " " + messageField.getText().trim().replaceAll("\n", "<br>")); //add HTML line breaks in place of newlines
+            messageField.setText(""); //clear the text field.
         }
     }
 
