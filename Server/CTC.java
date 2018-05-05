@@ -118,6 +118,25 @@ public class CTC implements Runnable {
                     }
 
                     send(replyMsg);
+                } else if(cmd.startsWith("ONLINE_STATUS")) {
+                    commandParts = cmd.split(" ");
+                    if(commandParts.length == 2) {
+                        user = server.getUser(commandParts[1]);
+
+                        if(user.ctc != null)
+                            send("ONLINE_STATUS " + user.username + " online");
+                        else
+                            send("ONLINE_STATUS " + user.username + " offline");
+                    }
+                } else if(cmd.startsWith("FILE_OFFER")) {
+                    commandParts = cmd.split(" ");
+
+                    user = server.getUser(commandParts[1]);
+
+                    if(user.ctc != null)
+                        user.send("FILE_OFFER " + commandParts[2] + " " + commandParts[3] + " " + commandParts[4]);
+                } else if(cmd.startsWith("ACCEPT_FILE")) {
+                    commandParts = cmd.split(" ");
                 }
             } catch (IOException ioe) {
                 ioe.printStackTrace();

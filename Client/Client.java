@@ -15,9 +15,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 
-public class Client extends JFrame implements ActionListener, MouseListener, ListSelectionListener, DropTargetListener {
+public class Client extends JFrame implements ActionListener, MouseListener, ListSelectionListener {
     CTS cts;
     LoginScreen loginScreen;
     DefaultListModel<Buddy> buddyList;
@@ -30,11 +32,16 @@ public class Client extends JFrame implements ActionListener, MouseListener, Lis
     }
 
     Client() {
+        Timer timer;
         JPanel mainPanel;
         JPanel buttonPanel;
         JScrollPane buddyScrollPane;
         Container cp;
         cp = getContentPane();
+
+        timer = new Timer(30000, this); //every 30 seconds
+        timer.setActionCommand("REFRESH_FRIENDS_ONLINE_STATUS");
+        timer.start();
 
         buddyList = new DefaultListModel<Buddy>();
         buddyJList = new JList<Buddy>(buddyList);
@@ -49,7 +56,7 @@ public class Client extends JFrame implements ActionListener, MouseListener, Lis
         buttonPanel = new JPanel(new GridLayout(0,3));
         buttonPanel.add(newJButton("Connect", "CONNECT", this));
         buttonPanel.add(newJButton("Add Buddy", "ADD_BUDDY", this));
-        buttonPanel.add(removeBuddyButton); //TODO: Hide this if no buddy is selected.
+        buttonPanel.add(removeBuddyButton);
 
         mainPanel = new JPanel(new BorderLayout());
 
@@ -119,6 +126,71 @@ public class Client extends JFrame implements ActionListener, MouseListener, Lis
         }
     }
 
+    void receiveFile(String fileName, long size) {
+        ServerSocket ss;
+        Socket s;
+        InputStream is;
+        FileOutputStream fos;
+        byte[] bytes;
+        int numBytesRead = 0;
+
+        try {
+            ss = new ServerSocket(5000);
+            s = ss.accept();
+
+            is = s.getInputStream();
+            fos = new FileOutputStream(fileName);
+
+            bytes = new byte[256];
+            numBytesRead = is.read(bytes);
+
+            while(numBytesRead < size) {
+                fos.write(bytes);
+                numBytesRead += is.read(bytes);
+            }
+
+            fos.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+        //s = ss.a
+    }
+
+    void sendFile(File f) {
+        Socket s;
+        FileInputStream fis;
+        OutputStream os;
+        byte[] bytes;
+        int numBytesRead;
+
+        bytes = new byte[256];
+
+        try {
+            fis = new FileInputStream(f);
+            s = new Socket("127.0.0.1", 5000);
+
+            os = s.getOutputStream();
+
+            numBytesRead = fis.read(bytes);
+            while (numBytesRead != 0) {
+                os.write(bytes);
+
+                numBytesRead = fis.read(bytes);
+            }
+        } catch (IOException ioe) {
+           ioe.printStackTrace();
+        }
+    }
+
+    void refreshOnlineStatuses() {
+        for(int i = 0; i < buddyList.size(); i++) {
+            send("ONLINE_STATUS " + buddyList.get(i).username);
+        }
+
+        buddyJList.repaint();
+    }
+
     void displayError(String message, String title) {
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
     }
@@ -137,6 +209,10 @@ public class Client extends JFrame implements ActionListener, MouseListener, Lis
                 } else {
                     send("BUDDY_REQUEST " + buddyName + " " + cts.ID);
                 }
+            }
+        } else if(cmd.equals("REFRESH_FRIENDS_ONLINE_STATUS")) {
+            if(cts != null) {
+                refreshOnlineStatuses();
             }
         }
     }
@@ -158,14 +234,6 @@ public class Client extends JFrame implements ActionListener, MouseListener, Lis
             removeBuddyButton.setEnabled(true);
     }
 
-    @Override
-    public void drop(DropTargetDropEvent dtde) {
-        Transferable transferableData;
-
-        transferableData = dtde.getTransferable();
-
-    }
-
     /**
      * These methods needed to be implemented to be a MouseListener but there is no use for them in this class.
      */
@@ -180,19 +248,4 @@ public class Client extends JFrame implements ActionListener, MouseListener, Lis
 
     @Override
     public void mouseExited(MouseEvent me) {}
-
-    /**
-     * These methods needed to be implemented to be a DropTargetListener but there is no use for them in this class.
-     */
-    @Override
-    public void dragEnter(DropTargetDragEvent dtde) {}
-
-    @Override
-    public void dragOver(DropTargetDragEvent dtde) {}
-
-    @Override
-    public void dropActionChanged(DropTargetDragEvent dtde) {}
-
-    @Override
-    public void dragExit(DropTargetEvent dte) {}
 }

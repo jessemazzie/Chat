@@ -11,7 +11,6 @@ public class CTS implements Runnable {
     Client client;
     Talker talker;
     String ID;
-    //MessageBox messageBox;
 
     public CTS(Client client, String ID) throws IOException {
 
@@ -78,6 +77,23 @@ public class CTS implements Runnable {
                             client.buddyList.addElement(new Buddy(parts[i]));
                             client.buddyJList.repaint();
                         }
+                    }
+                } else if(msg.startsWith("ONLINE_STATUS")) {
+                    String[] parts;
+
+                    parts = msg.split(" ");
+
+                    if(parts.length == 3) {
+                        client.getBuddy(parts[1]).isOnline = parts[2].equals("online"); //if status is online, set isOnline to true.
+                    }
+
+                } else if(msg.startsWith("FILE_OFFER")) {
+                    String[] parts;
+
+                    parts = msg.split(" ");
+
+                    if(parts.length == 4) {
+                        client.getBuddy(parts[1]).chatWindow.acceptFile(parts[2], parts[3], parts[1]);
                     }
                 }
             }
